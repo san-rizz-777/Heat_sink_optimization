@@ -29,7 +29,7 @@ def calculate_material_mass(N:int, H:float, t:float) -> float:
     Returns:
         mass: Total mass [kg]
     """ 
-    rho = config.materials.aluminum_density
+    rho = config.materials.aluminium_density
     W = config.operating.base_width
     L = config.operating.base_length
     t_base = config.operating.base_thickness
@@ -59,7 +59,7 @@ def calculate_material_cost(mass:float) -> float:
     Returns:
         cost: Material cost [$]
     """
-    cost_per_kg = config.materials.aluminum_cost
+    cost_per_kg = config.materials.aluminium_cost
     cost = mass * cost_per_kg
     return cost
 
