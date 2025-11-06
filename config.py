@@ -199,8 +199,8 @@ class Config:
         print("HEAT SINK OPTIMIZATION CONFIGURATION")
         print("=" * 70)
         print(f"\nMaterial Properties:")
-        print(f"  Aluminum k: {self.materials.aluminum_k} W/m·K")
-        print(f"  Aluminum density: {self.materials.aluminum_density} kg/m³")
+        print(f"  Aluminum k: {self.materials.aluminium_k} W/m·K")
+        print(f"  Aluminum density: {self.materials.aluminium_density} kg/m³")
         print(f"  Air k: {self.materials.air_k} W/m·K")
         
         print(f"\nOperating Conditions:")

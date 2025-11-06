@@ -368,11 +368,10 @@ if __name__ == "__main__":
     x_test = config.get_baseline_design()
     plot_heat_sink_geometry(x_test, 'test_geometry.png')
     
-    print("\nTest plots generated successfully!")"""
+    print("\nTest plots generated successfully!")
+    """
 Visualization Module for Heat Sink Optimization
-Course: Transport Phenomena
-Author: Sanskar Gunde (MM24B005)
-Date: November 2025
+
 
 This module creates all visualizations including:
 - Convergence plots
