@@ -1,0 +1,26 @@
+======================================================================
+HEAT SINK OPTIMIZATION RESULTS SUMMARY
+======================================================================
+
+Run Timestamp: 20251106_103731
+
+BASELINE DESIGN:
+  N = 20, H = 40.00 mm, t = 2.00 mm, s = 5.00 mm, v = 3.00 m/s
+  T_base = 63.63°C
+  P_fan = 0.371 W
+  Cost = $0.59
+
+OPTIMIZED DESIGN:
+  N = 17, H = 41.80 mm, t = 1.64 mm, s = 3.28 mm, v = 5.24 m/s
+  T_base = 58.27°C
+  P_fan = 1.125 W
+  Cost = $0.44
+
+IMPROVEMENTS:
+  Temperature: 5.36°C
+  Power: -0.754 W
+  Cost: $0.15
+  Annual energy savings: -6.6 kWh
+  Annual cost savings: $-0.79
+
+======================================================================

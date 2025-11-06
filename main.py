@@ -1,8 +1,5 @@
 """
 Main Execution Module for Heat Sink Optimization
-Course: Transport Phenomena
-Author: Sanskar Gunde (MM24B005)
-Date: November 2025
 
 This is the main entry point for the heat sink optimization project.
 It orchestrates the entire workflow:
@@ -176,9 +173,6 @@ def main():
     print(f"  PEC: {metrics_optimized['pec']:.2f}")
     
     print("\n" + "="*70)
-    print("Thank you for using the Heat Sink Optimizer!")
-    print("Author: Sanskar Gunde (MM24B005)")
-    print("Course: Transport Phenomena")
     print("="*70 + "\n")
     
     return results_data

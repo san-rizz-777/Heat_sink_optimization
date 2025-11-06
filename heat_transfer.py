@@ -156,7 +156,8 @@ def calculate_total_heat_transfer(N: int, H: float, t: float, s: float,
 
 def solve_base_temperature(N: int, H: float, t: float, s: float, v: float,
                           Q_load: float, T_inf: float, 
-                          tol: float = 0.1, max_iter: int = 100) -> Tuple[float, Dict]:
+                          tol: float = 0.1, max_iter: int = 100,
+                          material: str = 'aluminium') -> Tuple[float, Dict]:
     """
     Solve for base temperature using iterative method.
     
@@ -179,6 +180,7 @@ def solve_base_temperature(N: int, H: float, t: float, s: float, v: float,
         T_inf: Ambient temperature [°C]
         tol: Convergence tolerance [°C]
         max_iter: Maximum iterations
+        material: Heat sink material ('aluminium' or 'copper')
         
     Returns:
         T_base: Base temperature [°C]
@@ -186,7 +188,24 @@ def solve_base_temperature(N: int, H: float, t: float, s: float, v: float,
     """
     from fluid_dynamics import calculate_convection_coefficient
     
-    k = config.materials.aluminium_k
+    # Get material thermal conductivity
+    if material.lower() == 'copper':
+        k = config.materials.copper_k
+    else:
+        k = config.materials.aluminium_k
+    
+    # Create fin configuration dictionary for convection coefficient calculation
+    W = config.operating.base_width
+    L = config.operating.base_length
+    
+    fin_config = {
+        'N': N,
+        'H': H * 1000,  # Convert to mm
+        't': t * 1000,  # Convert to mm
+        's': s * 1000,  # Convert to mm
+        'W': W,
+        'L': L
+    }
     
     # Initial guess for T_base
     T_base = T_inf + 50.0  # Start with 50°C above ambient
@@ -194,10 +213,13 @@ def solve_base_temperature(N: int, H: float, t: float, s: float, v: float,
     converged = False
     iteration = 0
     residual = 0.0
+    h = 0.0
+    Q_calc = 0.0
     
     for iteration in range(max_iter):
         # Calculate convection coefficient with current T_base guess
-        h = calculate_convection_coefficient(v, s, H, T_base, T_inf)
+        # Using the correct function signature
+        h = calculate_convection_coefficient(v, fin_config, L)
         
         # Calculate heat dissipation with this h and T_base
         Q_calc = calculate_total_heat_transfer(N, H, t, s, h, T_base, T_inf, k)
@@ -232,13 +254,12 @@ def solve_base_temperature(N: int, H: float, t: float, s: float, v: float,
         'converged': converged,
         'iterations': iteration + 1,
         'final_residual': abs(residual),
-        'Q_calculated': Q_calc if iteration < max_iter else 0,
+        'Q_calculated': Q_calc,
         'Q_required': Q_load,
-        'h': h if iteration < max_iter else 0
+        'h': h
     }
     
     return T_base, info
-
 
 def calculate_thermal_resistance(T_base: float, T_inf: float, Q: float) -> float:
     """
@@ -331,26 +352,32 @@ def validate_heat_transfer_calculation():
     Q_load = 100.0
     T_inf = 25.0
     
-    T_base, info = solve_base_temperature(N, H, t, s, v, Q_load, T_inf)
     print(f"  Design: N={N}, H={H*1000:.0f}mm, t={t*1000:.0f}mm, s={s*1000:.0f}mm, v={v:.0f}m/s")
     print(f"  Heat load: {Q_load:.0f} W")
-    print(f"  Base temperature: {T_base:.2f} °C")
-    print(f"  Converged: {info['converged']}")
-    print(f"  Iterations: {info['iterations']}")
-    print(f"  Final residual: {info['final_residual']:.4f} W")
     
-    R_th = calculate_thermal_resistance(T_base, T_inf, Q_load)
-    print(f"  Thermal resistance: {R_th:.4f} K/W")
+    try:
+        T_base, info = solve_base_temperature(N, H, t, s, v, Q_load, T_inf)
+        print(f"  Base temperature: {T_base:.2f} °C")
+        print(f"  Converged: {info['converged']}")
+        print(f"  Iterations: {info['iterations']}")
+        print(f"  Final residual: {info['final_residual']:.4f} W")
+        
+        R_th = calculate_thermal_resistance(T_base, T_inf, Q_load)
+        print(f"  Thermal resistance: {R_th:.4f} K/W")
+    except Exception as e:
+        print(f"  ERROR: {e}")
+        import traceback
+        traceback.print_exc()
     
     # Test case 3: Temperature profile
     print(f"\nTest 3: Fin Temperature Profile")
-    x, T = calculate_fin_temperature_profile(H, t, h, k, T_base, T_inf, n_points=5)
+    T_base_test = 75.0  # Use a test value
+    x, T = calculate_fin_temperature_profile(H, t, h, k, T_base_test, T_inf, n_points=5)
     print(f"  Position [mm]:     Temperature [°C]:")
     for i in range(len(x)):
         print(f"    {x[i]*1000:6.1f}           {T[i]:6.2f}")
     
     print("="*70)
-
 
 if __name__ == "__main__":
     # Run validation
