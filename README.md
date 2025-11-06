@@ -62,17 +62,6 @@ Heat_sink_optimization/
 └── main.py # Entry point for running the full simulation
 
 
-## 📁 Repository Structure
-Heat_sink_optimization/
-├── heat_transfer.py # Conductive and convective heat models
-├── fluid_dynamics.py # Airflow and fan power models
-├── optimization.py # Differential Evolution implementation
-├── visualization.py # Graphs and heat maps
-├── validation.py # Sanity checks and parameter validation
-├── results/ # Generated result plots
-└── main.py # Entry point for running the full simulation
-
-
 ---
 
 ##  How to Run
@@ -82,19 +71,24 @@ Heat_sink_optimization/
    cd Heat_sink_optimization
    
 2. Install dependencies:
+   ```bash
    pip install -r requirements.txt
 
 3. Run the simulation:
+   ```bash
    python main.py
 
-📊 Output Summary
-i) After optimization, the code outputs:
-ii) Optimum fin geometry and air velocity
-iii) Reduced base temperature
-iv) Fan power vs. temperature trade-off plots
-v) Convergence curve of Differential Evolution
+---
+## Output Summary
+# After optimization, the code outputs:
+- Optimum fin geometry and air velocity
+- Reduced base temperature
+- Fan power vs. temperature trade-off plots
+- Convergence curve of Differential Evolution
 
-📚 References
-Incropera, F. P. & DeWitt, D. P. Fundamentals of Heat and Mass Transfer
-SciPy Documentation — Differential Evolution
-Bejan, A. Convection Heat Transfer
+ ---
+ 
+## 📚 References
+- Incropera, F. P. & DeWitt, D. P. Fundamentals of Heat and Mass Transfer
+- SciPy Documentation — Differential Evolution
+- Bejan, A. Convection Heat Transfer
